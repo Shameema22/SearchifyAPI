@@ -1,0 +1,6 @@
+@SearchifyAPI_HostAddress = http://localhost:5262
+
+GET {{SearchifyAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
