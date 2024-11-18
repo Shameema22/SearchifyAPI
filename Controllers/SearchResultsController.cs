@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SearchifyAPI.Data;
 using SearchifyAPI.Models;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-
 namespace SearchifyAPI.Controllers
 {
     [Route("Searchify")]
@@ -20,7 +13,7 @@ namespace SearchifyAPI.Controllers
         public SearchResultsController(AppDbContext context)
         {
             _context = context;
-        }        
+        }
 
         // POST: api/SearchResults
         [Route("GetSearchResults")]
@@ -65,6 +58,44 @@ namespace SearchifyAPI.Controllers
             });
 
         }
+
+        
+        [Route("GetSearchSuggestions")]
+        [HttpGet]
+        public IActionResult GetSearchSuggestions(string query)
+        {
+            if (string.IsNullOrEmpty(query))
+            {
+                return BadRequest("Query cannot be empty.");
+            }
+
+            // Filter the sample data based on the search term
+            var suggestions = SampleData
+                .Where(s => s.Contains(query, System.StringComparison.OrdinalIgnoreCase))
+                .Take(10)
+                .ToList();
+
+            return Ok(suggestions);
+        }
+
+        private static readonly List<string> SampleData = new List<string>
+        {
+            "Travel",
+            "Food",
+            "Nature",
+            "Pune",
+            "India",
+            "Wanderlust",
+            "Music",
+            "Flight",
+            "Art",
+            "Festivals",
+            "Vineyards",
+            "Fratelli",
+            "Sun",
+            "Nashik",
+            "destination"
+        };
 
     }
 }
